@@ -195,17 +195,17 @@
       </p>
     </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="mgs-player.js"></script>
-    <script type="text/javascript" defer>
-    $(document).ready(function(){
-      $('#mgs-codec').mgsCodec();
-
-    // add an example sound effect
-    setTimeout(function(){
-      document.querySelector('audio').play();
-    }, 400);
-  });
+    <script>
+      // Initialize codec when DOM is ready
+      document.addEventListener('DOMContentLoaded', function() {
+        initMgsCodec();
+        
+        // add an example sound effect
+        setTimeout(function(){
+          document.querySelector('audio').play();
+        }, 400);
+      });
     </script>
+    <script src="mgs-player.js"></script>
   </body>
   </html>

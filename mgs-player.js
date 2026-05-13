@@ -6,58 +6,114 @@
 * https://github.com/christabor/metal-gear-codec/
 */
 
-;(function($){
-	$.fn.mgsCodec = function(options) {
-		var defaults = {
-			interval_speed: 300,
-			animation_timeout: 1500,
-			transcription: '.transcription p'
-		},
-		opts = $.extend(defaults, options),
-		self = this,
-		notes = this.find(opts.transcription),
-		current_note = 0,
-		volume_indicator = this.find('#svg-volume-indicator-total'),
-		max_volume = volume_indicator.height();
-		notes.hide();
-
-		this.find('img').hide();
-
-		function triggerClick() {
-			// advance dialogue to next note
-			notes.eq(current_note).fadeIn(200);
-
-			// hide previous
-			notes.eq(current_note).prevAll().hide(100);
-
+function initMgsCodec(options) {
+	var defaults = {
+		interval_speed: 300,
+		animation_timeout: 1500,
+		transcription: '.transcription p'
+	};
+	
+	// Merge options with defaults
+	var opts = Object.assign({}, defaults, options);
+	
+	var codecEl = document.getElementById('mgs-codec');
+	var notesEls = codecEl.querySelectorAll(opts.transcription);
+	var imgEls = codecEl.querySelectorAll('img');
+	var volumeIndicator = codecEl.querySelector('#svg-volume-indicator-total');
+	var current_note = 0;
+	var max_volume = volumeIndicator.offsetHeight;
+	
+	// Hide all notes initially
+	notesEls.forEach(function(note) {
+		note.style.opacity = '0';
+		note.style.display = 'none';
+	});
+	
+	// Hide all images initially
+	imgEls.forEach(function(img) {
+		img.style.opacity = '0';
+		img.style.display = 'none';
+	});
+	
+	function fadeIn(elem, duration) {
+		elem.style.display = 'block';
+		var opacity = 0;
+		var start = Date.now();
+		var interval = setInterval(function() {
+			var elapsed = Date.now() - start;
+			opacity = Math.min(elapsed / duration, 1);
+			elem.style.opacity = opacity;
+			if (opacity === 1) clearInterval(interval);
+		}, 10);
+	}
+	
+	function fadeOut(elem, duration) {
+		var opacity = 1;
+		var start = Date.now();
+		var interval = setInterval(function() {
+			var elapsed = Date.now() - start;
+			opacity = Math.max(1 - (elapsed / duration), 0);
+			elem.style.opacity = opacity;
+			if (opacity === 0) {
+				elem.style.display = 'none';
+				clearInterval(interval);
+			}
+		}, 10);
+	}
+	
+	function triggerClick() {
+		// advance dialogue to next note
+		if (current_note < notesEls.length) {
+			fadeIn(notesEls[current_note], 200);
+			
+			// hide previous notes
+			for (var i = 0; i < current_note; i++) {
+				fadeOut(notesEls[i], 100);
+			}
+			
 			// increment forward
 			current_note += 1;
-			return;
 		}
-
-		function animateCodecBar() {
-			// randomize the height of the bar to simulate volume
-			volume_indicator.height(Math.random()*max_volume);
-			return;
+	}
+	
+	function animateCodecBar() {
+		// randomize the height of the bar to simulate volume
+		volumeIndicator.style.height = (Math.random() * max_volume) + 'px';
+	}
+	
+	function init() {
+		// Fade in all images
+		imgEls.forEach(function(img) {
+			fadeIn(img, 400);
+		});
+		
+		// show first note
+		if (notesEls.length > 0) {
+			fadeIn(notesEls[0], 200);
 		}
-
-		function init() {
-			self.find('img').each(function(k, elem){
-				var _elem = $(elem);
-				_elem.fadeIn(400);
-			});
-
-			// show first note
-			notes.eq(0).show();
-
-			self.on('click', triggerClick);
-
-			setTimeout(function(){
-				setInterval(animateCodecBar, opts.interval_speed);
-			}, opts.animation_timeout);
-			return;
+		
+		// Add click listener
+		codecEl.addEventListener('click', triggerClick);
+		
+		// Start animating the volume indicator
+		setTimeout(function(){
+			setInterval(animateCodecBar, opts.interval_speed);
+		}, opts.animation_timeout);
+	}
+	
+	// Start with fade out then fade in effect
+	codecEl.style.opacity = '0';
+	codecEl.style.display = 'none';
+	codecEl.style.display = 'block';
+	var opacity = 0;
+	var start = Date.now();
+	var interval = setInterval(function() {
+		var elapsed = Date.now() - start;
+		opacity = Math.min(elapsed / 200, 1);
+		codecEl.style.opacity = opacity;
+		if (opacity === 1) {
+			clearInterval(interval);
+			init();
 		}
-
-		this.hide().slideToggle(200, init);
-	};
-})(jQuery);
+	}, 10);
+}
