@@ -20,32 +20,10 @@ function initMgsCodec(options) {
 	var notesEls = codecEl.querySelectorAll(opts.transcription);
 	var imgEls = codecEl.querySelectorAll('img');
 	var volumeIndicator = codecEl.querySelector('#svg-volume-indicator-total');
+	var audioEl = document.querySelector('audio');
 	var current_note = 0;
 	var max_volume = volumeIndicator.offsetHeight;
-	
-	// Hide all notes initially
-	notesEls.forEach(function(note) {
-		note.style.opacity = '0';
-		note.style.display = 'none';
-	});
-	
-	// Hide all images initially
-	imgEls.forEach(function(img) {
-		img.style.opacity = '0';
-		img.style.display = 'none';
-	});
-	
-	function fadeIn(elem, duration) {
-		elem.style.display = 'block';
-		var opacity = 0;
-		var start = Date.now();
-		var interval = setInterval(function() {
-			var elapsed = Date.now() - start;
-			opacity = Math.min(elapsed / duration, 1);
-			elem.style.opacity = opacity;
-			if (opacity === 1) clearInterval(interval);
-		}, 10);
-	}
+	var audioStarted = false;
 	
 	function fadeOut(elem, duration) {
 		var opacity = 1;
@@ -82,6 +60,14 @@ function initMgsCodec(options) {
 	}
 	
 	function init() {
+		// Play audio when codec starts (user has interacted via button click)
+		if (audioEl && audioEl.paused && !audioStarted) {
+			audioEl.play().catch(function(err) {
+				console.log('[v0] Audio playback prevented:', err);
+			});
+			audioStarted = true;
+		}
+		
 		// Fade in all images
 		imgEls.forEach(function(img) {
 			fadeIn(img, 400);
