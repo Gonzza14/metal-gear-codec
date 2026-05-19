@@ -11,21 +11,19 @@
             box-sizing: border-box;
         }
 
-        @font-face {
-            font-family: 'PressStart2P';
-            src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        }
-
         body {
             font-family: 'Courier New', monospace;
-            background: #3a4a2c;
-            color: #fff;
+            background: linear-gradient(45deg, #9a9a7a 0%, #baa99a 50%, #9a9a7a 100%);
+            background-size: 200% 200%;
+            background-position: 0 0;
+            background-attachment: fixed;
+            color: #000;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Scanlines effect */
+        /* Patrón diagonal militar */
         body::before {
             content: '';
             position: fixed;
@@ -34,300 +32,418 @@
             width: 100%;
             height: 100%;
             background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.12),
-                rgba(0, 0, 0, 0.12) 1px,
-                transparent 1px,
-                transparent 2px
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 0, 0, 0.05) 10px,
+                rgba(0, 0, 0, 0.05) 20px
             );
             pointer-events: none;
-            z-index: 999;
+            z-index: 1;
         }
 
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 15px;
-            display: flex;
-            gap: 15px;
+        .wrapper {
+            position: relative;
+            z-index: 2;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* HEADER SUPERIOR */
-        .header-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, #5a6b4c, #4a5a3c);
-            border-bottom: 2px solid #2a3a1c;
-            padding: 10px 15px;
+        /* HEADER */
+        .header {
+            background: linear-gradient(180deg, #c0b090 0%, #a09070 100%);
+            border-bottom: 2px solid #5a5a4a;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
+            box-shadow: inset 0 1px 0 #e0d0b0;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .staff-label {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 6px 16px;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .menu-icons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .menu-icon {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #000;
+            background: #c0b090;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-icon.active {
+            background: #a0a090;
+            border: 3px solid #000;
         }
 
         .header-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             letter-spacing: 2px;
-            border: 2px solid #000;
-            padding: 5px 15px;
-            background: #000;
-            text-shadow: 1px 1px 0 #2a3a1c;
+            flex: 1;
+            text-align: center;
         }
 
-        .header-right {
+        .list-mode {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .list-icons {
+            display: flex;
+            gap: 3px;
+        }
+
+        .list-icon {
+            width: 10px;
+            height: 14px;
+            background: #000;
+        }
+
+        .arrow-icon {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .grid-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 1px solid #000;
+            background: repeating-linear-gradient(
+                90deg,
+                #000 0px,
+                #000 3px,
+                #c0b090 3px,
+                #c0b090 6px
+            );
         }
 
         .gmp-display {
             background: #fff;
             color: #000;
-            padding: 5px 15px;
             border: 2px solid #000;
+            padding: 6px 12px;
             font-weight: bold;
             font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* PANEL IZQUIERDO - LISTA DE STAFF */
+        .gmp-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 10px;
+            padding: 10px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .info-bar {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .info-bar-item {
+            display: flex;
+            gap: 6px;
+        }
+
+        .icon-soldier {
+            width: 12px;
+            height: 12px;
+            background: #000;
+            border-radius: 2px;
+        }
+
+        /* LEFT PANEL - STAFF LIST */
         .left-panel {
-            flex: 0 0 320px;
+            width: 320px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 50px;
-        }
-
-        .panel {
-            background: #e8e8e8;
-            border: 3px solid #000;
-            border-right: 5px solid #000;
-            border-bottom: 5px solid #000;
-            border-top: 2px solid #999;
-            border-left: 2px solid #999;
-            box-shadow: -4px 4px 0 rgba(0, 0, 0, 0.3);
         }
 
         .panel-header {
-            background: #000;
-            color: #fff;
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
             padding: 8px;
             font-weight: bold;
-            font-size: 14px;
-            letter-spacing: 2px;
+            font-size: 12px;
             text-align: center;
-            border-bottom: 2px solid #666;
+            letter-spacing: 2px;
         }
 
         .staff-list {
+            background: #e0e0e0;
+            border: 2px solid #000;
+            border-top: none;
             max-height: 400px;
             overflow-y: auto;
-            padding: 8px;
         }
 
         .staff-item {
-            background: #e8e8e8;
-            border: 1px solid #999;
-            border-right: 2px solid #000;
-            border-bottom: 2px solid #000;
-            border-top: 1px solid #fff;
-            border-left: 1px solid #fff;
+            background: #f5f5f5;
+            border-bottom: 1px solid #999;
+            border-right: 1px solid #999;
             padding: 6px 8px;
-            margin-bottom: 4px;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
+            cursor: pointer;
             transition: all 0.1s;
-            color: #000;
         }
 
         .staff-item:hover {
-            background: #ffff00;
+            background: #fff;
         }
 
         .staff-item.selected {
             background: #ff0000;
             color: #fff;
-            border: 2px solid #000;
+            border: none;
         }
 
         .staff-rank {
-            background: #ddd;
-            padding: 1px 4px;
+            background: #ffdd00;
+            color: #000;
+            padding: 2px 4px;
             margin-right: 4px;
             font-size: 10px;
+            font-weight: bold;
         }
 
-        /* PANEL DERECHO */
-        .right-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 50px;
-        }
-
-        /* Profile Section */
-        .profile-section {
-            display: flex;
-            gap: 10px;
-        }
-
-        .character-box {
-            flex: 0 0 280px;
-            background: #888;
-            border: 3px solid #000;
-            border-right: 5px solid #000;
-            border-bottom: 5px solid #000;
-            border-top: 2px solid #ccc;
-            border-left: 2px solid #ccc;
-            box-shadow: -4px 4px 0 rgba(0, 0, 0, 0.3);
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .character-name {
+        .staff-item.selected .staff-rank {
             background: #cc0000;
             color: #fff;
-            padding: 8px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 13px;
-            border-bottom: 2px solid #000;
-            letter-spacing: 1px;
         }
 
-        .character-image {
-            width: 100%;
-            height: 240px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 240"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23666" stroke-width="1"/></pattern></defs><rect width="280" height="240" fill="%23888"/><rect width="280" height="240" fill="url(%23grid)"/><text x="140" y="120" font-family="monospace" font-size="14" fill="%23666" text-anchor="middle" dominant-baseline="middle">CLIC PARA CARGAR IMAGEN</text></svg>');
-            background-size: cover;
-            background-position: center;
-            cursor: pointer;
+        .staff-icons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .staff-icon {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #000;
+            background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            font-size: 8px;
+        }
+
+        .staff-item.selected .staff-icon {
+            background: #ff0000;
+            border-color: #fff;
+        }
+
+        /* CENTER PANEL - CHARACTER */
+        .center-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+        }
+
+        .character-box {
+            width: 220px;
+            height: 280px;
+            background: #888;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
             font-size: 11px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
         }
 
-        .character-image:hover {
-            opacity: 0.8;
-        }
-
-        .character-image img {
+        .character-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* Stats Box */
-        .stats-box {
-            background: #1a1a1a;
-            border: 3px solid #000;
-            border-right: 5px solid #000;
-            border-bottom: 5px solid #000;
-            border-top: 2px solid #555;
-            border-left: 2px solid #555;
-            box-shadow: -4px 4px 0 rgba(0, 0, 0, 0.3);
-            padding: 8px;
-        }
-
-        .stat-item {
+        .character-placeholder {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280"><defs><pattern id="pixel" width="20" height="20" patternUnits="userSpaceOnUse"><rect fill="%23888" width="20" height="20"/><rect fill="%23999" x="0" y="0" width="10" height="10"/><rect fill="%23999" x="10" y="10" width="10" height="10"/></pattern></defs><rect fill="url(%23pixel)" width="220" height="280"/><text x="110" y="140" font-family="monospace" font-size="12" fill="%23555" text-anchor="middle" dominant-baseline="middle">NO IMAGE</text></svg>');
+            width: 100%;
+            height: 100%;
             display: flex;
-            gap: 6px;
-            margin-bottom: 6px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .stat-label {
-            background: #cc0000;
-            color: #fff;
-            padding: 4px 8px;
-            font-weight: bold;
-            font-size: 11px;
-            border: 1px solid #000;
-            min-width: 60px;
-            text-align: center;
+        /* RIGHT PANEL - STATS */
+        .right-panel {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .stat-input {
-            flex: 1;
-            background: #000;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 4px 6px;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .stat-input:hover {
-            background: #00ff00;
-            color: #000;
-        }
-
-        .stat-input:focus {
-            outline: none;
-        }
-
-        /* Bottom Section */
-        .bottom-section {
-            background: #000;
-            border: 3px solid #000;
-            border-top: 2px solid #555;
-            border-left: 2px solid #555;
-            box-shadow: inset 1px 1px 0 #555;
-            padding: 10px 8px;
+        .stats-header {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #00ff00;
-            font-size: 11px;
-            font-family: 'Courier New', monospace;
         }
 
-        .button-group {
+        .stat-row {
             display: flex;
-            gap: 8px;
+            gap: 0;
+            margin-bottom: 4px;
         }
 
-        .btn {
-            background: #cc0000;
+        .stat-label {
+            background: #ff0000;
             color: #fff;
-            border: 2px solid #000;
-            border-right: 4px solid #000;
-            border-bottom: 4px solid #000;
-            border-top: 2px solid #999;
-            border-left: 2px solid #999;
-            padding: 8px 16px;
-            font-family: 'Courier New', monospace;
+            border: 1px solid #000;
+            padding: 6px 10px;
             font-weight: bold;
             font-size: 12px;
-            cursor: pointer;
-            transition: all 0.1s;
+            width: 80px;
             letter-spacing: 1px;
-            box-shadow: -2px 2px 0 rgba(0, 0, 0, 0.4);
         }
 
-        .btn:hover {
-            background: #ff3333;
-            transform: translate(-1px, -1px);
-            box-shadow: -3px 3px 0 rgba(0, 0, 0, 0.5);
+        .stat-value {
+            background: #3a3a3a;
+            color: #fff;
+            border: 1px solid #000;
+            padding: 6px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            flex: 1;
+            text-align: right;
         }
 
-        .btn:active {
-            border-right: 2px solid #000;
-            border-bottom: 2px solid #000;
-            transform: translate(1px, 1px);
-            box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.3);
+        .gmp-plus-box {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 8px 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .gmp-plus-label {
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .gmp-plus-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* WEAPONS GRID */
+        .weapons-grid {
+            background: #3a3a3a;
+            border: 2px solid #000;
+            padding: 4px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2px;
+        }
+
+        .weapon-slot {
+            background: #555;
+            border: 1px solid #333;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .weapon-slot.active {
+            background: #ff0000;
+        }
+
+        .weapon-icon {
+            display: inline-block;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #000;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 11px;
+            font-weight: bold;
+            border-top: 2px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        .bottom-text {
+            background: #000;
+            color: #fff;
+            padding: 8px 20px;
+            font-size: 10px;
+            border-top: 2px solid #333;
         }
 
         /* Call Screen */
@@ -341,7 +457,7 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            z-index: 3000;
         }
 
         .call-screen.active {
@@ -365,7 +481,7 @@
         }
 
         .call-title {
-            background: #cc0000;
+            background: #ff0000;
             color: #fff;
             font-size: 56px;
             font-weight: bold;
@@ -374,8 +490,6 @@
             border: 4px solid #fff;
             letter-spacing: 8px;
             text-shadow: 3px 3px 0 #000;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 0 30px rgba(204, 0, 0, 0.9);
         }
 
         .call-instruction {
@@ -383,9 +497,8 @@
             font-size: 28px;
             font-weight: bold;
             letter-spacing: 2px;
-            font-family: 'Courier New', monospace;
             animation: blink 0.8s infinite;
-            text-shadow: 2px 2px 0 #cc0000;
+            text-shadow: 2px 2px 0 #ff0000;
         }
 
         @keyframes blink {
@@ -393,127 +506,206 @@
             51%, 100% { opacity: 0.4; }
         }
 
-        /* Scrollbar */
         .staff-list::-webkit-scrollbar {
-            width: 14px;
+            width: 12px;
         }
 
         .staff-list::-webkit-scrollbar-track {
-            background: #c0c0c0;
+            background: #d0d0d0;
         }
 
         .staff-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #e0e0e0, #808080);
+            background: #808080;
             border: 1px solid #000;
         }
 
         @media (max-width: 1024px) {
-            .main-container {
+            .main-content {
                 flex-direction: column;
             }
 
             .left-panel, .right-panel {
-                margin-top: 60px;
-            }
-
-            .profile-section {
-                flex-direction: column;
-            }
-
-            .character-box {
-                flex: 0 0 auto;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header-top">
-        <div class="header-title">STAFF</div>
-        <div class="header-right">
-            <div style="display: flex; gap: 10px; align-items: center; font-size: 12px;">
-                <span>LIST MODE</span>
-                <span>⬜▶ 🗋</span>
+    <div class="wrapper">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="staff-label">STAFF</div>
+                <div class="menu-icons">
+                    <div class="menu-icon active">👤</div>
+                    <div class="menu-icon">❌</div>
+                    <div class="menu-icon">❌</div>
+                    <div class="menu-icon">📊</div>
+                    <div class="menu-icon">⚙️</div>
+                </div>
             </div>
-            <div class="gmp-display">✕ GMP<br>0</div>
+            <div class="header-title">Waiting Room</div>
+            <div class="list-mode">
+                <span>LIST MODE</span>
+                <div class="list-icons">
+                    <div class="list-icon"></div>
+                </div>
+                <span class="arrow-icon">➜</span>
+                <span class="grid-icon"></span>
+            </div>
+            <div class="gmp-display">
+                <span>✕ GMP</span>
+                <span class="gmp-value">0</span>
+            </div>
         </div>
-    </div>
 
-    <div class="main-container">
-        <!-- Left Panel: Staff List -->
-        <div class="left-panel">
-            <div class="panel">
+        <!-- INFO BAR -->
+        <div class="info-bar">
+            <div class="info-bar-item">
+                <span class="icon-soldier"></span>
+                <span>15/350</span>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- LEFT PANEL -->
+            <div class="left-panel">
                 <div class="panel-header">NAME</div>
                 <div class="staff-list" id="staffList">
                     <div class="staff-item selected" data-name="ARTURO">
-                        <span><span class="staff-rank">LND</span>ARTURO</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">LND</span>
+                            <span>ARTURO</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="EAGLE RAY">
-                        <span><span class="staff-rank">NML</span>EAGLE RAY</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>EAGLE RAY</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="CABBAGE WHITE">
-                        <span><span class="staff-rank">NML</span>CABBAGE WHITE</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>CABBAGE WHITE</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="PECCARY">
-                        <span><span class="staff-rank">NML</span>PECCARY</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>PECCARY</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="OSTRICH">
-                        <span><span class="staff-rank">NML</span>OSTRICH</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>OSTRICH</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="FRILL SHARK">
-                        <span><span class="staff-rank">NML</span>FRILL SHARK</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>FRILL SHARK</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="BOBCAT">
-                        <span><span class="staff-rank">NML</span>BOBCAT</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>BOBCAT</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
                     <div class="staff-item" data-name="ALLIGATOR">
-                        <span><span class="staff-rank">NML</span>ALLIGATOR</span>
-                        <span>📞</span>
+                        <div>
+                            <span class="staff-rank">NML</span>
+                            <span>ALLIGATOR</span>
+                        </div>
+                        <div class="staff-icons">
+                            <div class="staff-icon">📞</div>
+                            <div class="staff-icon">⬜</div>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- CENTER PANEL -->
+            <div class="center-panel">
+                <div class="character-box" id="charImage">
+                    <div class="character-placeholder"></div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+                <div class="stats-header">
+                    <div>
+                        <div class="stat-row">
+                            <div class="stat-label">LIFE</div>
+                            <div class="stat-value">7000</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">PSYCHE</div>
+                            <div class="stat-value">7000</div>
+                        </div>
+                    </div>
+                    <div class="gmp-plus-box">
+                        <div class="gmp-plus-label">GMP+</div>
+                        <div class="gmp-plus-value">7875</div>
+                    </div>
+                </div>
+
+                <div class="weapons-grid">
+                    <div class="weapon-slot active">✕</div>
+                    <div class="weapon-slot active">⬆️</div>
+                    <div class="weapon-slot active">🔫</div>
+                    <div class="weapon-slot active">🔧</div>
+                    <div class="weapon-slot active">◇</div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Panel: Profile and Stats -->
-        <div class="right-panel">
-            <div class="profile-section">
-                <div class="character-box">
-                    <div class="character-name" id="charName">ARTURO</div>
-                    <div class="character-image" id="charImage" title="Clic para cargar imagen">
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                    </div>
-                </div>
-
-                <div class="stats-box" style="flex: 1;">
-                    <div style="color: #fff; text-align: center; margin-bottom: 8px; font-size: 13px; border-bottom: 1px solid #555; padding-bottom: 6px;">STATS</div>
-                    <div class="stat-item">
-                        <div class="stat-label">LIFE</div>
-                        <input type="number" id="lifeInput" class="stat-input" value="7000" min="0">
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">PSYCHE</div>
-                        <input type="number" id="psycheInput" class="stat-input" value="7000" min="0">
-                    </div>
-                </div>
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-left">
+                <span>!</span>
+                <span>DETAILS △</span>
             </div>
-
-            <div class="bottom-section">
-                <div style="display: flex; gap: 8px;">
-                    <span>!</span>
-                    <span>DETAILS △</span>
-                    <span style="margin-left: 10px;">HELP SELECT</span>
-                </div>
-                <div class="button-group">
-                    <button class="btn" id="callBtn">CALL</button>
-                    <button class="btn" onclick="window.location.href='/index.html'">CODEC</button>
-                </div>
+            <div class="footer-right">
+                <span>HELP select</span>
+                <button id="callBtn" style="background: none; border: none; color: #fff; cursor: pointer; font-family: 'Courier New', monospace; font-weight: bold; font-size: 11px;">CALL</button>
             </div>
+        </div>
+
+        <div class="bottom-text">
+            You can increase the number of staff through Fulton recoveries during missions.
         </div>
     </div>
 
@@ -527,9 +719,7 @@
 
     <script>
         const staffItems = document.querySelectorAll('.staff-item');
-        const charName = document.getElementById('charName');
         const charImage = document.getElementById('charImage');
-        const imageInput = document.getElementById('imageInput');
         const callBtn = document.getElementById('callBtn');
         const callScreen = document.getElementById('callScreen');
 
@@ -538,45 +728,32 @@
             item.addEventListener('click', function() {
                 staffItems.forEach(i => i.classList.remove('selected'));
                 this.classList.add('selected');
-                const name = this.getAttribute('data-name');
-                charName.textContent = name;
-                charImage.style.backgroundImage = 'none';
-                charImage.innerHTML = '<input type="file" id="imageInput" accept="image/*" style="display: none;">';
             });
         });
 
         // Image upload
         charImage.addEventListener('click', function() {
-            imageInput.click();
-        });
-
-        document.addEventListener('change', function(e) {
-            if (e.target.type === 'file' && e.target.accept === 'image/*') {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(event) {
-                        charImage.style.backgroundImage = 'url(' + event.target.result + ')';
-                        charImage.style.backgroundSize = 'cover';
-                        charImage.style.backgroundPosition = 'center';
-                        charImage.innerHTML = '';
+                        charImage.innerHTML = '<img src="' + event.target.result + '" alt="Character">';
                     };
                     reader.readAsDataURL(file);
                 }
-            }
+            });
+            input.click();
         });
 
         // Call button
-        callBtn.addEventListener('click', function() {
+        callBtn.addEventListener('click', function(e) {
+            e.preventDefault();
             callScreen.classList.add('active');
             
-            // Try to play audio
-            const audio = document.querySelector('audio');
-            if (audio) {
-                audio.play().catch(err => console.log('[v0] Audio:', err));
-            }
-
-            // Click to proceed
             setTimeout(function() {
                 callScreen.addEventListener('click', function() {
                     window.location.href = '/index.html';
