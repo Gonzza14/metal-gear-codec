@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metal Gear Solid - Waiting Room</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #9e9e7e;
+            background-image: repeating-linear-gradient(
+                45deg,
+                #9e9e7e,
+                #9e9e7e 30px,
+                #8e8e6e 30px,
+                #8e8e6e 60px
+            );
+            color: #000;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background: #7a7a5a;
+            border: 2px solid #000;
+        }
+
+        .staff-title {
+            background: #000;
+            color: #fff;
+            padding: 5px 12px;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 3px;
+        }
+
+        .top-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .menu-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-box {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #000;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .gmp-box {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 6px 12px;
+            font-weight: bold;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1.2fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* WAITING ROOM LABEL */
+        .waiting-label {
+            grid-column: 1 / 4;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        /* LEFT PANEL - STAFF LIST */
+        .staff-panel {
+            background: #f5f5f5;
+            border: 2px solid #000;
+            padding: 0;
+        }
+
+        .staff-header {
+            background: #fff;
+            border-bottom: 2px solid #000;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+
+        .staff-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .staff-item {
+            padding: 6px 8px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .staff-item:hover {
+            background: #ffff99;
+        }
+
+        .staff-item.selected {
+            background: #cc0000;
+            color: #fff;
+            font-weight: bold;
+            border: 1px solid #000;
+        }
+
+        .staff-name {
+            flex: 1;
+            display: flex;
+            gap: 6px;
+        }
+
+        .staff-rank {
+            background: #ffcc00;
+            padding: 0px 4px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .staff-icons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .staff-icon {
+            width: 14px;
+            height: 14px;
+            border: 1px solid #000;
+            background: #ddd;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CENTER PANEL - CHARACTER */
+        .character-panel {
+            background: #999;
+            border: 2px solid #000;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character-image {
+            width: 100%;
+            height: 280px;
+            background: #888;
+            border-bottom: 2px solid #000;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23666" stroke-width="0.5"/></pattern></defs><rect width="300" height="280" fill="%23888"/><rect width="300" height="280" fill="url(%23grid)"/></svg>');
+            background-size: cover;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .character-image:hover {
+            opacity: 0.9;
+        }
+
+        .character-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* RIGHT PANEL - STATS AND WEAPONS */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stats-box {
+            background: #666;
+            border: 2px solid #000;
+            padding: 0;
+        }
+
+        .stat-row {
+            display: flex;
+            border-bottom: 1px solid #000;
+        }
+
+        .stat-label {
+            background: #cc0000;
+            color: #fff;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 12px;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            background: #999;
+            flex: 1;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            border-left: 1px solid #000;
+        }
+
+        .weapons-box {
+            background: #666;
+            border: 2px solid #000;
+            padding: 8px;
+        }
+
+        .weapons-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .weapon-slot {
+            background: #999;
+            border: 1px solid #000;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .weapon-slot.active {
+            background: #cc0000;
+        }
+
+        .gmp-label {
+            background: #fff;
+            border: 1px solid #000;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .gmp-value {
+            background: #999;
+            border: 1px solid #000;
+            padding: 6px 8px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: right;
+        }
+
+        /* BOTTOM BAR */
+        .bottom-bar {
+            background: #000;
+            color: #fff;
+            padding: 10px 12px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .bottom-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .bottom-right {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-text {
+            background: #000;
+            color: #fff;
+            padding: 10px 12px;
+            border: 2px solid #000;
+            border-top: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .call-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .call-screen.active {
+            display: flex;
+        }
+
+        .call-box {
+            text-align: center;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .call-title {
+            background: #cc0000;
+            color: #fff;
+            font-size: 56px;
+            font-weight: bold;
+            padding: 30px 50px;
+            margin-bottom: 40px;
+            border: 4px solid #fff;
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 0 #000;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 30px rgba(204, 0, 0, 0.9);
+        }
+
+        .call-instruction {
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+            animation: blink 0.8s infinite;
+            text-shadow: 2px 2px 0 #cc0000;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.4; }
+        }
+
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .waiting-label {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="staff-title">STAFF</div>
+        <div class="top-right">
+            <div class="menu-icons">
+                <div class="icon-box">📋</div>
+                <div class="icon-box">❌</div>
+                <div class="icon-box">📝</div>
+                <div class="icon-box">📊</div>
+                <div class="icon-box">🎯</div>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <span>LIST MODE</span>
+                <span>📊 ▶ 🗋</span>
+            </div>
+            <div class="gmp-box">✕ GMP<br><span style="font-size: 16px;">0</span></div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-wrapper">
+        <div class="waiting-label">Waiting Room</div>
+
+        <!-- LEFT PANEL -->
+        <div class="staff-panel">
+            <div class="staff-header">NAME</div>
+            <div class="staff-list">
+                <div class="staff-item selected" data-name="ARTURO">
+                    <div class="staff-name">
+                        <span class="staff-rank">LND</span>
+                        <span>ARTURO</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="EAGLE RAY">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>EAGLE RAY</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="CABBAGE WHITE">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>CABBAGE WHITE</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="PECCARY">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>PECCARY</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="OSTRICH">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>OSTRICH</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="FRILL SHARK">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>FRILL SHARK</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="BOBCAT">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>BOBCAT</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+                <div class="staff-item" data-name="ALLIGATOR">
+                    <div class="staff-name">
+                        <span class="staff-rank">NML</span>
+                        <span>ALLIGATOR</span>
+                    </div>
+                    <div class="staff-icons">
+                        <div class="staff-icon">📞</div>
+                        <div class="staff-icon">☐</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER PANEL -->
+        <div class="character-panel">
+            <div class="character-image" id="charImage" title="Clic para cargar imagen">
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+            <div class="stats-box">
+                <div class="stat-row">
+                    <div class="stat-label">LIFE</div>
+                    <div class="stat-value">7000</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">PSYCHE</div>
+                    <div class="stat-value">7000</div>
+                </div>
+            </div>
+
+            <div class="weapons-box">
+                <div class="weapons-grid">
+                    <div class="weapon-slot active">❌</div>
+                    <div class="weapon-slot active">🔧</div>
+                    <div class="weapon-slot active">🔫</div>
+                    <div class="weapon-slot active">💣</div>
+                    <div class="weapon-slot active">◇</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="gmp-label">GMP+</div>
+                <div class="gmp-value">7875</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+        <div class="bottom-left">
+            <span>! </span>
+            <span>DETAILS △</span>
+            <span>HELP select</span>
+        </div>
+        <div class="bottom-right">
+            <button onclick="showCallScreen()" style="background: #cc0000; color: #fff; border: 2px solid #000; padding: 6px 16px; font-weight: bold; cursor: pointer; font-family: 'Courier New'; font-size: 11px;">CALL</button>
+            <button onclick="window.location.href='/index.html'" style="background: #cc0000; color: #fff; border: 2px solid #000; padding: 6px 16px; font-weight: bold; cursor: pointer; font-family: 'Courier New'; font-size: 11px;">CODEC</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-text">
+        you can increase the number of staff through Fulton recoveries during missions.
+    </div>
+
+    <!-- CALL SCREEN -->
+    <div class="call-screen" id="callScreen">
+        <div class="call-box">
+            <div class="call-title">CALL</div>
+            <div class="call-instruction">HAZ CLICK PARA RESPONDER</div>
+        </div>
+    </div>
+
+    <script>
+        const charImage = document.getElementById('charImage');
+        const imageInput = document.getElementById('imageInput');
+        const callScreen = document.getElementById('callScreen');
+        const staffItems = document.querySelectorAll('.staff-item');
+
+        // Image upload
+        charImage.addEventListener('click', function() {
+            imageInput.click();
+        });
+
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'file' && e.target.accept === 'image/*') {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        charImage.style.backgroundImage = 'url(' + event.target.result + ')';
+                        charImage.style.backgroundSize = 'cover';
+                        charImage.style.backgroundPosition = 'center';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        // Staff selection
+        staffItems.forEach(item => {
+            item.addEventListener('click', function() {
+                staffItems.forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Call screen
+        function showCallScreen() {
+            callScreen.classList.add('active');
+            
+            const audio = document.querySelector('audio');
+            if (audio) {
+                audio.play().catch(err => console.log('[v0] Audio:', err));
+            }
+
+            setTimeout(function() {
+                callScreen.addEventListener('click', function() {
+                    window.location.href = '/index.html';
+                }, { once: true });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
