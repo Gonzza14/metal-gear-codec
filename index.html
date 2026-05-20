@@ -91,23 +91,30 @@
   .call-title {
     background: #ff0000;
     color: #000;
-    padding: 40px 80px;
-    font-size: 72px;
-    font-weight: bold;
-    letter-spacing: 12px;
-    border: 4px solid #fff;
+    padding: 35px 70px;
+    font-size: 80px;
+    font-weight: 900;
+    letter-spacing: 15px;
+    border: 3px solid #000;
     font-family: 'Courier New', monospace;
-    box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+    box-shadow: 
+      0 0 30px rgba(255, 0, 0, 0.9),
+      0 0 60px rgba(255, 0, 0, 0.6),
+      -8px 8px 0 rgba(0, 0, 0, 0.5);
+    text-rendering: pixelated;
+    image-rendering: pixelated;
   }
 
   .call-instruction {
     color: #fff;
-    font-size: 36px;
-    font-weight: bold;
-    letter-spacing: 4px;
+    font-size: 44px;
+    font-weight: 900;
+    letter-spacing: 6px;
     font-family: 'Courier New', monospace;
     animation: call-blink 0.8s infinite;
-    text-shadow: 2px 2px 0 #ff0000;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
+    text-rendering: pixelated;
+    image-rendering: pixelated;
   }
 
   @keyframes call-blink {
@@ -232,32 +239,42 @@
     color: #A6D7B2;
   }
 
-  @media (max-width: 768px) {
-    body {
-      padding: 8px;
+  @media (max-width: 768px) and (orientation: landscape) {
+    .call-title {
+      padding: 25px 50px;
+      font-size: 60px;
+      letter-spacing: 10px;
     }
-    #mgs-codec {
-      margin: 1em auto;
+
+    .call-instruction {
+      font-size: 32px;
+      letter-spacing: 4px;
     }
-    #mgs-codec .img-left,
-    #mgs-codec .img-right,
-    #mgs-codec .left-cover,
-    #mgs-codec .right-cover {
-      width: 100px;
-      height: 130px;
+  }
+
+  @media (max-width: 600px) {
+    .call-title {
+      padding: 20px 40px;
+      font-size: 48px;
+      letter-spacing: 8px;
     }
-    #mgs-codec .img-left,
-    #mgs-codec .left-cover {
-      left: 30px;
+
+    .call-instruction {
+      font-size: 24px;
+      letter-spacing: 3px;
     }
-    #mgs-codec .img-right,
-    #mgs-codec .right-cover {
-      right: 30px;
+  }
+
+  @media (max-width: 400px) {
+    .call-title {
+      padding: 15px 30px;
+      font-size: 36px;
+      letter-spacing: 6px;
     }
-    #mgs-codec .transcription {
-      font-size: 12px;
-      left: 20px;
-      width: 85%;
+
+    .call-instruction {
+      font-size: 18px;
+      letter-spacing: 2px;
     }
   }
 
