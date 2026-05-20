@@ -13,16 +13,107 @@
     font-family: 'Helvetica', 'Arial', sans-serif;
     color: #fff;
     font-size: 12px;
+    margin: 0;
+    padding: 10px;
   }
+  
+  .orientation-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #091A17;
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .orientation-warning.active {
+    display: flex;
+  }
+  
+  .rotate-icon {
+    width: 80px;
+    height: 80px;
+    border: 3px solid #A6D7B2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rotate-animation 2s infinite;
+  }
+  
+  @keyframes rotate-animation {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+    100% { transform: rotate(90deg); }
+  }
+  
+  .rotate-icon svg {
+    width: 60px;
+    height: 60px;
+    stroke: #A6D7B2;
+    stroke-width: 2;
+    fill: none;
+  }
+  
+  .orientation-text {
+    color: #A6D7B2;
+    font-size: 18px;
+    text-align: center;
+    max-width: 80%;
+  }
+
+  .call-screen {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000 url(call-screen.png) center/contain no-repeat;
+    z-index: 9998;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: call-fade 2s infinite;
+  }
+
+  .call-screen.hidden {
+    display: none;
+  }
+
+  @keyframes call-fade {
+    0%, 50% { opacity: 1; }
+    75%, 100% { opacity: 0.5; }
+  }
+
+  .call-title {
+    display: none;
+  }
+
+  .call-instruction {
+    display: none;
+  }
+
   .container-fluid {
-    width: 702px;
+    width: 100%;
+    max-width: 702px;
     margin: 0 auto;
   }
   #mgs-codec {
     background: transparent url(mgs-codec-container.svg) no-repeat 0 0;
-    background-size: cover;
-    width: 702px;
-    height: 448px;
+    background-size: contain;
+    background-position: center;
+    width: 100%;
+    max-width: 702px;
+    height: auto;
+    aspect-ratio: 702 / 448;
     margin: 1em auto;
     position: relative;
     z-index: 100;
@@ -126,23 +217,117 @@
   a:hover {
     color: #A6D7B2;
   }
-  #notes {
-    width: 65%;
-    margin: 0 auto;
+
+  @media (max-width: 768px) and (orientation: landscape) {
+    .call-title {
+      padding: 25px 50px;
+      font-size: 60px;
+      letter-spacing: 10px;
+    }
+
+    .call-instruction {
+      font-size: 32px;
+      letter-spacing: 4px;
+    }
   }
-  #notes strong {
-    color: #A6D7B2;
+
+  @media (max-width: 600px) {
+    .call-title {
+      padding: 20px 40px;
+      font-size: 48px;
+      letter-spacing: 8px;
+    }
+
+    .call-instruction {
+      font-size: 24px;
+      letter-spacing: 3px;
+    }
   }
-  .copyrights {
-    font-size: 10px;
-    margin: 1em 0;
-    text-align: center;
+
+  @media (max-width: 400px) {
+    .call-title {
+      padding: 15px 30px;
+      font-size: 36px;
+      letter-spacing: 6px;
+    }
+
+    .call-instruction {
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+  }
+
+  @media (max-width: 768px) and (orientation: portrait) {
+    .orientation-warning {
+      display: flex;
+    }
+    
+    .container-fluid {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) and (orientation: landscape) {
+    .orientation-warning {
+      display: none;
+    }
+    
+    body {
+      padding: 5px;
+    }
+    
+    .container-fluid {
+      display: block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body {
+      padding: 6px;
+    }
+    #mgs-codec .img-left,
+    #mgs-codec .img-right,
+    #mgs-codec .left-cover,
+    #mgs-codec .right-cover {
+      width: 80px;
+      height: 100px;
+      top: 15px;
+    }
+    #mgs-codec .img-left,
+    #mgs-codec .left-cover {
+      left: 20px;
+    }
+    #mgs-codec .img-right,
+    #mgs-codec .right-cover {
+      right: 20px;
+    }
+    #mgs-codec .transcription {
+      font-size: 10px;
+      bottom: 5px;
+      left: 15px;
+    }
   }
   </style>
 </head>
 <body>
 
-  <div class="container-fluid">
+  <div class="call-screen" id="callScreen">
+  </div>
+
+  <div class="orientation-warning" id="orientationWarning">
+    <div class="rotate-icon">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="10" width="60" height="80" rx="8"/>
+        <circle cx="50" cy="80" r="3"/>
+        <path d="M 35 35 L 50 50 L 65 35" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="orientation-text">
+      Gira tu dispositivo al modo horizontal para una mejor experiencia
+    </div>
+  </div>
+
+  <div class="container-fluid" style="display: none;">
     <div id="mgs-codec">
 
       <div id="svg-volume-indicator-total"></div>
@@ -164,48 +349,79 @@
         <p><strong>Raiden:</strong> Because it looked so dumb. Anyone who&rsquo;s willing to be seen like that must be completely insane. I mean, he&rsquo;s a psycho; there&rsquo;s no question about it.</p>
       </div>
     </div>
-    <div id="notes">
-      <small>^ click to advance dialogue.</small>
-      <br>
-      <h4>Snake? Snake? Snaaaaaake!?</h4>
-      <p>Feel free to drop in your own images or customize to your liking. Default options: </p>
-      <ol>
-        <li><strong>interval_speed</strong>: [number] A number in milliseconds to animate the volume.</li>
-        <li><strong>animation_timeout</strong>: [number] A number in milliseconds to wait before animating the volume.</li>
-        <li><strong>transcription</strong>: [string] A string referencing the paragraph elements, used to create jquery object.</li>
-      </ol>
-      <p>Adding dialogue: </p>
-      <p>Dialogue can be added by inserting each new block as a <strong>paragraph</strong> tag within the <code>.transcription</code> container.</p>
-      <br>
-      <audio controls style="display:none;">
-        <source src="codec.mp3" type="audio/mpeg">
-        </audio>
-        <p id="repo-buttons">
-          <a href="mgs-codec-container-complete.svg" target="_blank" class="btn-primary btn">Download Vector</a>
-          &nbsp;<a href="https://github.com/christabor/metal-gear-codec/" class="btn-primary btn">View on GitHub</a>
-        </p>
-        <br>
-        <p>Vector file is licensed under <a href="https://creativecommons.org/licenses/by/3.0/us/" target="_blank">CC BY 3.0 US</a>. JS is licensed under MIT License.</p>
-        <br>
-        <p>Tested in latest versions of Chrome, Firefox and Safari.</p>
-      </div>
-      <br><br>
-      <p class="copyrights">
-        <a href="http://www.sub.wz.cz/sounds.html" target="_blank">Codec mp3 by sub.wz.cz. Original sounds are copyright &copy; Konami Corporation.</a>
-      </p>
+    <audio id="codec-audio" style="display:none;">
+      <source src="codec.mp3" type="audio/mpeg">
+    </audio>
+    <div id="notes" style="display:none;"></div>
     </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="mgs-player.js"></script>
-    <script type="text/javascript" defer>
-    $(document).ready(function(){
-      $('#mgs-codec').mgsCodec();
-
-    // add an example sound effect
-    setTimeout(function(){
-      document.querySelector('audio').play();
-    }, 400);
-  });
+    <script>
+      var codecShown = false;
+      
+      function checkOrientation() {
+        var warning = document.getElementById('orientationWarning');
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var isPortrait = height > width;
+        var isSmallDevice = width <= 768;
+        
+        if (isSmallDevice && isPortrait) {
+          warning.classList.add('active');
+        } else {
+          warning.classList.remove('active');
+        }
+      }
+      
+      function showCodec() {
+        if (codecShown) return;
+        codecShown = true;
+        
+        var callScreen = document.getElementById('callScreen');
+        var container = document.querySelector('.container-fluid');
+        
+        callScreen.classList.add('hidden');
+        if (container) {
+          container.style.display = 'block';
+        }
+      }
+      
+      window.addEventListener('orientationchange', checkOrientation);
+      window.addEventListener('resize', checkOrientation);
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        checkOrientation();
+        
+        var callScreen = document.getElementById('callScreen');
+        var audio = document.getElementById('codec-audio');
+        
+        callScreen.addEventListener('click', function() {
+          if (audio) {
+            audio.play().catch(function(err) {
+              console.log('[v0] Audio playback error:', err);
+            });
+          }
+          
+          setTimeout(function() {
+            showCodec();
+            initMgsCodec();
+          }, 500);
+        });
+        
+        callScreen.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          if (audio) {
+            audio.play().catch(function(err) {
+              console.log('[v0] Audio playback error:', err);
+            });
+          }
+          
+          setTimeout(function() {
+            showCodec();
+            initMgsCodec();
+          }, 500);
+        });
+      });
     </script>
+    <script src="mgs-player.js"></script>
   </body>
   </html>
