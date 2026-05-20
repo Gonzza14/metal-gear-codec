@@ -306,15 +306,7 @@
             gap: 15px;
         }
 
-        .footer-text {
-            background: #000;
-            color: #fff;
-            padding: 10px 12px;
-            border: 2px solid #000;
-            border-top: none;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
+
 
         .call-screen {
             display: none;
@@ -385,6 +377,140 @@
 
             .waiting-label {
                 grid-column: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .top-right {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .menu-icons {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .waiting-label {
+                font-size: 20px;
+                padding-left: 10px;
+            }
+
+            .staff-list {
+                max-height: 250px;
+            }
+
+            .character-image {
+                height: 200px;
+            }
+
+            .right-panel {
+                gap: 10px;
+            }
+
+            .bottom-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 8px;
+            }
+
+            .bottom-left {
+                width: 100%;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .bottom-right {
+                width: 100%;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            button {
+                flex: 1;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                padding: 6px 8px;
+            }
+
+            .staff-title {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .top-right {
+                gap: 5px;
+                font-size: 10px;
+            }
+
+            .icon-box {
+                width: 20px;
+                height: 20px;
+                font-size: 8px;
+            }
+
+            .gmp-box {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+
+            .content-wrapper {
+                gap: 8px;
+            }
+
+            .waiting-label {
+                font-size: 16px;
+            }
+
+            .staff-header {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            .staff-item {
+                padding: 5px 6px;
+                font-size: 11px;
+            }
+
+            .stat-label {
+                min-width: 60px;
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+
+            .stat-value {
+                font-size: 13px;
+                padding: 6px 8px;
+            }
+
+            .weapon-slot {
+                font-size: 18px;
+            }
+
+            .bottom-bar {
+                padding: 6px;
+                font-size: 11px;
             }
         }
     </style>
@@ -548,11 +674,6 @@
             <button onclick="showCallScreen()" style="background: #cc0000; color: #fff; border: 2px solid #000; padding: 6px 16px; font-weight: bold; cursor: pointer; font-family: 'Courier New'; font-size: 11px;">CALL</button>
             <button onclick="window.location.href='/index.html'" style="background: #cc0000; color: #fff; border: 2px solid #000; padding: 6px 16px; font-weight: bold; cursor: pointer; font-family: 'Courier New'; font-size: 11px;">CODEC</button>
         </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer-text">
-        you can increase the number of staff through Fulton recoveries during missions.
     </div>
 
     <!-- CALL SCREEN -->
