@@ -372,34 +372,30 @@
 
         @media (max-width: 1200px) {
             .content-wrapper {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
 
             .waiting-label {
-                grid-column: 1;
+                grid-column: 1 / -1;
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             body {
-                padding: 8px;
+                padding: 10px;
             }
 
             .top-bar {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
                 margin-bottom: 10px;
             }
 
             .top-right {
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                gap: 12px;
                 width: 100%;
-            }
-
-            .menu-icons {
-                width: 100%;
-                justify-content: space-around;
+                flex-wrap: wrap;
             }
 
             .content-wrapper {
@@ -413,6 +409,45 @@
                 padding-left: 10px;
             }
 
+            .character-image {
+                height: 240px;
+            }
+
+            .stat-label {
+                min-width: 70px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 8px;
+                margin-bottom: 8px;
+            }
+
+            .top-right {
+                flex-direction: row;
+                gap: 8px;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .waiting-label {
+                font-size: 18px;
+                padding-left: 8px;
+            }
+
             .staff-list {
                 max-height: 250px;
             }
@@ -421,53 +456,43 @@
                 height: 200px;
             }
 
-            .right-panel {
-                gap: 10px;
-            }
-
             .bottom-bar {
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                gap: 8px;
                 padding: 8px;
-            }
-
-            .bottom-left {
-                width: 100%;
-                justify-content: center;
-                gap: 10px;
-            }
-
-            .bottom-right {
-                width: 100%;
-                justify-content: center;
-                gap: 10px;
+                font-size: 11px;
             }
 
             button {
-                flex: 1;
-                min-width: 100px;
+                padding: 5px 12px;
+                font-size: 10px;
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
+            body {
+                padding: 6px;
+            }
+
             .top-bar {
-                padding: 6px 8px;
+                padding: 6px;
+                gap: 6px;
+                margin-bottom: 6px;
             }
 
             .staff-title {
                 font-size: 12px;
-                padding: 4px 8px;
+                padding: 3px 8px;
             }
 
-            .top-right {
-                gap: 5px;
-                font-size: 10px;
+            .menu-icons {
+                gap: 4px;
             }
 
             .icon-box {
                 width: 20px;
                 height: 20px;
-                font-size: 8px;
+                font-size: 9px;
             }
 
             .gmp-box {
@@ -476,41 +501,140 @@
             }
 
             .content-wrapper {
-                gap: 8px;
+                gap: 6px;
+                margin-bottom: 6px;
             }
 
             .waiting-label {
                 font-size: 16px;
+                padding-left: 6px;
             }
 
-            .staff-header {
-                font-size: 12px;
-                padding: 6px;
+            .staff-list {
+                max-height: 200px;
             }
 
             .staff-item {
-                padding: 5px 6px;
-                font-size: 11px;
+                padding: 4px 5px;
+                font-size: 10px;
+            }
+
+            .character-image {
+                height: 150px;
             }
 
             .stat-label {
-                min-width: 60px;
-                font-size: 11px;
-                padding: 6px 8px;
+                min-width: 50px;
+                font-size: 9px;
+                padding: 5px 6px;
             }
 
             .stat-value {
-                font-size: 13px;
-                padding: 6px 8px;
+                font-size: 10px;
+                padding: 5px 6px;
+            }
+
+            .weapons-grid {
+                gap: 4px;
             }
 
             .weapon-slot {
-                font-size: 18px;
+                font-size: 16px;
             }
 
             .bottom-bar {
+                flex-direction: column;
+                gap: 6px;
                 padding: 6px;
+                font-size: 10px;
+            }
+
+            .bottom-left {
+                width: 100%;
+                gap: 8px;
+            }
+
+            .bottom-right {
+                width: 100%;
+                gap: 6px;
+            }
+
+            button {
+                padding: 4px 10px;
+                font-size: 9px;
+                flex: 1;
+            }
+
+            .call-title {
+                padding: 20px 40px;
+                font-size: 40px;
+            }
+
+            .call-instruction {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .top-bar {
+                padding: 5px;
+            }
+
+            .staff-title {
                 font-size: 11px;
+                padding: 3px 6px;
+            }
+
+            .icon-box {
+                width: 18px;
+                height: 18px;
+                font-size: 8px;
+            }
+
+            .gmp-box {
+                padding: 3px 6px;
+                font-size: 9px;
+            }
+
+            .waiting-label {
+                font-size: 14px;
+            }
+
+            .character-image {
+                height: 120px;
+            }
+
+            .stat-label {
+                min-width: 45px;
+                font-size: 8px;
+                padding: 4px 5px;
+            }
+
+            .stat-value {
+                font-size: 9px;
+                padding: 4px 5px;
+            }
+
+            .weapons-grid {
+                gap: 3px;
+            }
+
+            .weapon-slot {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 3px 8px;
+                font-size: 8px;
+            }
+
+            .call-title {
+                padding: 15px 30px;
+                font-size: 32px;
+            }
+
+            .call-instruction {
+                font-size: 16px;
             }
         }
     </style>
