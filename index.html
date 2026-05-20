@@ -75,51 +75,30 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background: #000 url(call-screen.png) center/contain no-repeat;
     z-index: 9998;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 40px;
     cursor: pointer;
+    animation: call-fade 2s infinite;
   }
 
   .call-screen.hidden {
     display: none;
   }
 
+  @keyframes call-fade {
+    0%, 50% { opacity: 1; }
+    75%, 100% { opacity: 0.5; }
+  }
+
   .call-title {
-    background: #ff0000;
-    color: #000;
-    padding: 35px 70px;
-    font-size: 80px;
-    font-weight: 900;
-    letter-spacing: 15px;
-    border: 3px solid #000;
-    font-family: 'Courier New', monospace;
-    box-shadow: 
-      0 0 30px rgba(255, 0, 0, 0.9),
-      0 0 60px rgba(255, 0, 0, 0.6),
-      -8px 8px 0 rgba(0, 0, 0, 0.5);
-    text-rendering: pixelated;
-    image-rendering: pixelated;
+    display: none;
   }
 
   .call-instruction {
-    color: #fff;
-    font-size: 44px;
-    font-weight: 900;
-    letter-spacing: 6px;
-    font-family: 'Courier New', monospace;
-    animation: call-blink 0.8s infinite;
-    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
-    text-rendering: pixelated;
-    image-rendering: pixelated;
-  }
-
-  @keyframes call-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0.4; }
+    display: none;
   }
 
   .container-fluid {
@@ -333,8 +312,6 @@
 <body>
 
   <div class="call-screen" id="callScreen">
-    <div class="call-title">CALL</div>
-    <div class="call-instruction">PUSH SELECT</div>
   </div>
 
   <div class="orientation-warning" id="orientationWarning">
